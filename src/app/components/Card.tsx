@@ -1,40 +1,63 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { Grid } from '../page';
 
 type CardProps = {
-    position: number[]
-    played: boolean;
-    signPlayer: 'X' | 'O' | null;
-    turn: number
-    setTurn: React.Dispatch<React.SetStateAction<number>>
-}
+  value: number;
+  position: number[];
+  disabled: boolean
+  turn: number;
+  setTurn: React.Dispatch<React.SetStateAction<number>>;
+  grid: number[][];
+  setGrid: React.Dispatch<React.SetStateAction<Grid>>;
+  gameOver: boolean;
+  setGameOver: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-type Sign = {
-    sign: 'X' | 'O' | null
-}
+export const Card = ({
+  value,
+  position,
+  disabled,
+  grid,
+  setGrid,
+  turn,
+  setTurn,
+  gameOver,
+  setGameOver,
+}: CardProps) => {
 
-export const Card = ({position, played, signPlayer, turn ,setTurn }: CardProps ) => {
-    const [sign, setSign] = useState<Sign>({sign: null})
-    const [cardPlayed, setCardPlayed] = useState(false)
+  function playCard(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    setTurn((prev) => prev + 1);
+    setGameOver(false);
 
+    const playedPosition = e.currentTarget.value
+      .split('')
+      .map((el) => Number(el));
+    let gridCopy = [...grid];
+    gridCopy[playedPosition[0]][playedPosition[1]] = turn % 2 === 0 ? 1 : 2;
+    setGrid({ grid: gridCopy });
+  }
 
-    function handlePlay(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        setTurn((prev) => prev + 1)
+  const signLookUp = {
+    0: null,
+    1: 'X',
+    2: 'O',
+  };
 
-        const signToBePlayed = turn % 2 === 0 ? 'X' : 'O'
-
-        setSign({sign: signToBePlayed})
-        setCardPlayed(true)
-    }
 
   return (
-    <button onClick={handlePlay} className={`w-44 h-44 rounded-lg m-1 bg-gray-800 hover:bg-gray-700 duration-150 transition-all ${cardPlayed && 'bg-gray-700'}`}>
-        {/* {position} */}
-        {/* {signPlayer} */}
-        {sign.sign}
+    <button
+      disabled={disabled || gameOver}
+      onClick={playCard}
+      value={String(position[0] + String(position[1]))}
+      className={`w-44 h-44 rounded-lg m-1 bg-gray-800 text-white text-8xl duration-150 transition-all border-2 border-gray-700 ${
+        disabled || gameOver ? 'bg-gray-700' : 'hover:bg-gray-700'
+      }`}
+    >
+      {signLookUp[value]}
     </button>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;
