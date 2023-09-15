@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Card from './components/Card';
 import { useEffect, useState } from 'react';
-import { MyDialog } from './components/MyDialog';
+import { InitDialog } from './components/MyDialog';
 
 export type Grid = {
   grid: number[][];
@@ -21,6 +21,7 @@ export default function Home() {
     grid: gridInit,
   });
   const [gameOver, setGameOver] = useState(true);
+  const [currentPlayer, setCurrentPlayer] = useState(1);
 
   function resetGame(grid: Grid) {
     setGrid({ grid: gridInit });
@@ -83,12 +84,7 @@ export default function Home() {
   }, [turn]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-gray-900 ">
-      <div className="text-white text-xl">My Tic-Tac-Toe</div>
-      <div className="flex justify-between">
-        <button className='text-white' onClick={() => resetGame(grid)}>Start</button>
-        <div>Turn: {turn}</div>
-      </div>
+    <main className="flex min-h-screen flex-col items-center justify-between p-10 bg-gray-900 ">
       <div>
         {grid.grid.map((row, rowIndex) => (
           <div key={rowIndex} className="flex">
@@ -109,7 +105,7 @@ export default function Home() {
           </div>
         ))}
       </div>
-      {/* {gameOver ? <MyDialog isOpen={gameOver} setIsOpen={setGameOver}/> : null} */}
+      {gameOver ? <InitDialog isOpen={gameOver} setIsOpen={setGameOver} onClick={() => resetGame()}/> : null}
       {/* {gameOver ?<>wwww</> : null} */}
     </main>
   );
