@@ -6,7 +6,7 @@ type MyDialogProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export function InitDialog({ isOpen, setIsOpen, onClick }: MyDialogProps) {
+export function InitDialog({ isOpen, setIsOpen }: MyDialogProps) {
   function closeModal() {
     setIsOpen(false);
   }
@@ -71,10 +71,7 @@ export function InitDialog({ isOpen, setIsOpen, onClick }: MyDialogProps) {
                   <button
                     type="button"
                     className="inline-flex justify-center rounded-md border border-transparent bg-gray-300 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={() => {
-                      closeModal();
-                      onClick();
-                    }}
+                    onClick={() => closeModal()}
                   >
                     Play
                   </button>

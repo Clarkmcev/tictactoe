@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Card from './components/Card';
 import { useEffect, useState } from 'react';
 import { InitDialog } from './components/MyDialog';
+import Board from './components/Board';
+import Settings from './components/Settings';
 
 export type Grid = {
   grid: number[][];
@@ -20,13 +22,14 @@ export default function Home() {
   const [grid, setGrid] = useState<Grid>({
     grid: gridInit,
   });
+
   const [gameOver, setGameOver] = useState(true);
-  const [currentPlayer, setCurrentPlayer] = useState(1);
 
   function resetGame(grid: Grid) {
     setGrid({ grid: gridInit });
     setTurn(0);
     setGameOver(false);
+    console.log('triggered')
   }
 
   function checkWin(grid: Grid) {
@@ -81,31 +84,14 @@ export default function Home() {
 
   useEffect(() => {
     checkWin(grid);
-  }, [turn]);
+  }, [turn, grid]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-10 bg-gray-900 ">
-      <div>
-        {grid.grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="flex">
-            {grid.grid.map((col, colIndex) => (
-              <Card
-                value={grid.grid[rowIndex][colIndex]}
-                key={colIndex}
-                position={[rowIndex, colIndex]}
-                disabled={grid.grid[rowIndex][colIndex] !== 0}
-                grid={grid.grid}
-                setGrid={setGrid}
-                turn={turn}
-                setTurn={setTurn}
-                gameOver={gameOver}
-                setGameOver={setGameOver}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
-      {gameOver ? <InitDialog isOpen={gameOver} setIsOpen={setGameOver} onClick={() => resetGame()}/> : null}
+    <main className="flex min-h-screen items-center p-10 bg-gray-900">
+      <Settings onClick={resetGame} />
+      <Board grid={grid.grid} setGrid={setGrid} gameOver={gameOver} setGameOver={setGameOver} turn={turn} setTurn={setTurn} />
+      {/* GameStatusDialog */}
+      {/* {gameOver ? <InitDialog isOpen={gameOver} setIsOpen={setGameOver} onClick={() => resetGame()}/> : null} */}
       {/* {gameOver ?<>wwww</> : null} */}
     </main>
   );
