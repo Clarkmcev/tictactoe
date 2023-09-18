@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Grid } from '../page';
+import { signLookUp } from './utils';
 
 type CardProps = {
   value: number;
@@ -39,19 +40,13 @@ export const Card = ({
     setGrid({ grid: gridCopy });
   }
 
-  const signLookUp = {
-    0: null,
-    1: 'X',
-    2: 'O',
-  };
-
 
   return (
     <button
       disabled={disabled || gameOver}
       onClick={playCard}
       value={String(position[0] + String(position[1]))}
-      className={`w-44 h-44 rounded-lg m-1 bg-gray-800 text-white text-8xl duration-150 transition-all border-2 border-gray-700 ${
+      className={`w-44 h-44 mb-2 bg-gray-800 rounded-lg text-white text-8xl duration-150 transition-all ${
         disabled || gameOver ? 'bg-gray-700' : 'hover:bg-gray-700'
       }`}
     >
