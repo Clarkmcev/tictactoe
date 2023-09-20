@@ -4,21 +4,27 @@ import { useEffect, useState } from 'react';
 import Board from './components/Board';
 import Settings from './components/Settings';
 import {
+  KEY_COLUMN,
+  KEY_DIAGONAL,
   KEY_EASY_DIFFICULTY,
   KEY_MODE_DUO,
   KEY_MODE_SOLO,
+  KEY_ROW,
   gridNotCompleted,
   translateSign,
 } from './components/utils';
 import toast, { Toaster } from 'react-hot-toast';
 import ToastResult from './components/toasts/ToastResult';
 import ScoreBoard from './components/ScoreBoard';
-import WinnerLine from './components/icons/WinnerLine';
-import { draw } from './components/icons/Icon';
 
 export type Grid = {
   grid: number[][];
 };
+
+export type WinnerLine = {
+  n: number;
+  type: string;
+} | null;
 
 interface Score {
   X: number;
@@ -38,13 +44,16 @@ export default function Home() {
   });
   const [mode, setMode] = useState(KEY_MODE_DUO);
   const [difficulty, setDifficulty] = useState(KEY_EASY_DIFFICULTY);
+  const [AIisPlaying, setAIisPlaying] = useState(false);
   const [gameOver, setGameOver] = useState(true);
   const [score, setScore] = useState<Score>({ X: 0, O: 0 });
+  const [winLine, setWinLine] = useState<WinnerLine>(null);
 
   function resetGame(grid: Grid) {
     setGrid({ grid: gridInit });
     setTurn(0);
     setGameOver(false);
+    setScore({ X: 0, O: 0 });
   }
 
   function checkWin(grid: Grid) {
@@ -62,6 +71,7 @@ export default function Home() {
           winner = grid.grid[i][0];
           setGameOver(true);
           gameOverHandler(winner);
+          setWinLine({ n: i, type: KEY_ROW });
           return;
         }
 
@@ -75,6 +85,7 @@ export default function Home() {
           winner = grid.grid[0][j];
           setGameOver(true);
           gameOverHandler(winner);
+          setWinLine({ n: j, type: KEY_COLUMN });
           return;
         }
 
@@ -88,6 +99,7 @@ export default function Home() {
           winner = grid.grid[0][0];
           setGameOver(true);
           gameOverHandler(winner);
+          setWinLine({ n: 1, type: KEY_DIAGONAL });
           return;
         }
 
@@ -111,13 +123,16 @@ export default function Home() {
     }
   }
 
+  function newGame(grid: Grid) {
+    setGrid({ grid: gridInit });
+    setTurn(0);
+    setGameOver(false);
+  }
+
   function AI(grid: Grid) {
     let hasNotPlayed = true;
     let randomRowIndex = 0;
     let randomColIndex = 0;
-
-    // const gridUncompleted = gridCompleted(grid, 0);
-    // console.log(gridCompleted);
 
     const gridIsNotEmpty = gridNotCompleted(grid, 0);
 
@@ -147,6 +162,7 @@ export default function Home() {
         borderRadius: '10px',
         fontStyle: 'bold',
         background: 'transparent',
+        boxShadow: 'none',
         color: '#9ca3af',
       },
       duration: 2000,
@@ -158,11 +174,19 @@ export default function Home() {
       copyScore[sign] += 1;
       setScore(copyScore);
     }
+
+    setTimeout(() => {
+      newGame(grid);
+    }, 2000);
   }
 
   useEffect(() => {
     if (mode === KEY_MODE_SOLO && turn % 2 !== 0 && !gameOver) {
-      AI(grid);
+      setAIisPlaying(true);
+      setTimeout(() => {
+        AI(grid);
+        setAIisPlaying(false);
+      }, 1000);
     }
   }, [turn]);
 
@@ -171,9 +195,9 @@ export default function Home() {
   }, [grid]);
 
   return (
-    <main className="p-10 bg-gray-900 m-auto h-screen">
-      <div className="text-white font-bold text-4xl text-center mb-10">
-        My TikTakTu
+    <main className="bg-gray-900 h-screen relative">
+      <div className="text-white font-bold text-4xl text-center p-5 mb-10 w-full bg-gray-900">
+        TikTakTu
       </div>
       <div className="flex justify-center space-x-10">
         <Settings
@@ -183,6 +207,8 @@ export default function Home() {
           difficulty={difficulty}
           setDifficulty={setDifficulty}
           gameOver={gameOver}
+          reset={resetGame}
+          grid={grid.grid}
         />
         <Board
           grid={grid.grid}
@@ -192,12 +218,11 @@ export default function Home() {
           turn={turn}
           setTurn={setTurn}
           mode={mode}
+          winLine={winLine}
+          AIisPlaying={AIisPlaying}
         />
         <ScoreBoard score={score} />
         <Toaster position="bottom-center" reverseOrder={false} />
-      </div>
-      <div className="absolute">
-        {gameOver ? <WinnerLine draw={draw} type={''} /> : null}
       </div>
     </main>
   );

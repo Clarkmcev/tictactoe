@@ -2,19 +2,19 @@
 
 import React from 'react';
 import { Grid } from '../page';
-import { signLookUp } from './utils';
 import Icon from './icons/Icon';
 
 type CardProps = {
   value: number;
   position: number[];
-  disabled: boolean
+  disabled: boolean;
   turn: number;
   setTurn: React.Dispatch<React.SetStateAction<number>>;
   grid: number[][];
   setGrid: React.Dispatch<React.SetStateAction<Grid>>;
   gameOver: boolean;
   setGameOver: React.Dispatch<React.SetStateAction<boolean>>;
+  AIisPlaying: boolean;
 };
 
 export const Card = ({
@@ -27,8 +27,8 @@ export const Card = ({
   setTurn,
   gameOver,
   setGameOver,
+  AIisPlaying,
 }: CardProps) => {
-
   function playCard(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     setTurn((prev) => prev + 1);
     setGameOver(false);
@@ -41,15 +41,15 @@ export const Card = ({
     setGrid({ grid: gridCopy });
   }
 
+  const cardIsDisabledStyling =
+    disabled || gameOver ? 'bg-gray-700' : 'hover:bg-gray-700 bg-gray-800';
 
   return (
-  <button
-      disabled={disabled || gameOver}
+    <button
+      disabled={disabled || gameOver || AIisPlaying}
       onClick={playCard}
       value={String(position[0] + String(position[1]))}
-      className={`w-44 h-44 mb-2 bg-gray-800 rounded-lg text-white text-8xl duration-150 transition-all ${
-        disabled || gameOver ? 'bg-gray-700' : 'hover:bg-gray-700'
-      }`}
+      className={`w-44 h-44 overflow-hidden mb-2  rounded-lg text-white text-8xl duration-150 transition-all ${cardIsDisabledStyling}`}
     >
       <Icon value={value} />
     </button>

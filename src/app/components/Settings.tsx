@@ -8,6 +8,7 @@ import {
 } from './utils';
 import Button from './Button';
 import SettingsIcons from './icons/SettingsIcons';
+import Refresh from './icons/Refresh';
 
 export type SettingProps = {
   onClick: any;
@@ -16,6 +17,8 @@ export type SettingProps = {
   difficulty: string;
   setDifficulty: Dispatch<SetStateAction<string>>;
   gameOver: boolean;
+  reset: any;
+  grid: any;
 };
 
 function Settings({
@@ -25,9 +28,11 @@ function Settings({
   difficulty,
   setDifficulty,
   gameOver,
+  reset,
+  grid,
 }: SettingProps) {
   function onChange() {
-    console.log('settings changed!');
+    reset(grid);
   }
 
   return (
@@ -98,11 +103,27 @@ function Settings({
           </div>
         </div>
       ) : null}
-      {gameOver ? (
+      {/* {gameOver ? (
         <Button onClick={onClick}>Start new game</Button>
       ) : (
         <Button onClick={onClick}>Reset game</Button>
-      )}
+      )} */}
+      <div className="flex space-x-2">
+        <Button
+          icon={<Refresh className="h-4 w-4" />}
+          onClick={onClick}
+          disabled={gameOver}
+        >
+          Start
+        </Button>
+        <Button
+          icon={<Refresh className="h-4 w-4" />}
+          onClick={onClick}
+          disabled={gameOver}
+        >
+          Reset
+        </Button>
+      </div>
     </div>
   );
 }

@@ -21,7 +21,7 @@ function Cross({ draw }: Props) {
         y2="200"
         stroke="#f3f4f6"
         variants={draw}
-        custom={1}
+        custom={3}
       />
       <motion.line
         x1="60"

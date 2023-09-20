@@ -1,31 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { winLine } from '../utils';
 
 type Props = {
   draw: any;
-  type: any
+  type: any;
 };
 
-function WinnerLine({ draw, type}: Props) {
-  return (
-    <motion.svg
-      width="400"
-      height="400"
-      viewBox="0 0 600 600"
-      initial="hidden"
-      animate="visible"
-    >
-      <motion.line
-        x1="60"
-        y1="200"
-        x2="200"
-        y2="60"
-        stroke="#f3f4f6"
-        variants={draw}
-        custom={1}
-      />
-    </motion.svg>
-  );
+function WinnerLine({ draw, type }: Props) {
+  const [position, setPosition] = useState({
+    x1: '',
+    y1: '',
+    x2: '',
+    y2: '',
+  });
+
+  function translatePosition() {}
+
+  useEffect(() => {
+    if (type) {
+      setPosition(winLine[type.type][type.n]);
+    }
+  }, [position]);
+
+  if (type) {
+    return (
+      <motion.svg
+        width="560"
+        height="560"
+        viewBox="0 0 600 600"
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.line
+          x1={position.x1}
+          y1={position.y1}
+          x2={position.x2}
+          y2={position.y2}
+          stroke="#111827"
+          variants={draw}
+          custom={1}
+        />
+      </motion.svg>
+    );
+  }
 }
 
 export default WinnerLine;
