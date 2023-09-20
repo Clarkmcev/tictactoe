@@ -41,7 +41,7 @@ function Settings({
         <SettingsIcons className="w-4 h-4" />
         <p className="text-gray-500">Settings</p>
       </div>
-      <div className="text-white bg-gray-800 p-4 rounded-lg h-fit mb-2">
+      <div className="text-white bg-gray-900 p-4 rounded-lg h-fit mb-2">
         <div className="flex-col space-y-4">
           <p className="font-bold text-gray-500">Number of players</p>
           <div>
@@ -69,7 +69,7 @@ function Settings({
         </div>
       </div>
       {mode === KEY_MODE_SOLO ? (
-        <div className="flex-col space-y-2 text-white bg-gray-800 p-4 rounded-lg h-fit">
+        <div className="flex-col space-y-2 text-white bg-gray-900 p-4 rounded-lg h-fit">
           <p className="font-bold text-gray-500">Difficulty</p>
           <div>
             <label className="flex space-x-2">

@@ -37,7 +37,7 @@ function WinnerLine({ draw, type }: Props) {
           y1={position.y1}
           x2={position.x2}
           y2={position.y2}
-          stroke="#111827"
+          stroke="#FFFFFF"
           variants={draw}
           custom={1}
         />

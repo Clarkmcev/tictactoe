@@ -48,6 +48,7 @@ export default function Home() {
   const [gameOver, setGameOver] = useState(true);
   const [score, setScore] = useState<Score>({ X: 0, O: 0 });
   const [winLine, setWinLine] = useState<WinnerLine>(null);
+  let stop = false;
 
   function resetGame(grid: Grid) {
     setGrid({ grid: gridInit });
@@ -56,70 +57,73 @@ export default function Home() {
     setScore({ X: 0, O: 0 });
   }
 
-  function checkWin(grid: Grid) {
+   function checkWin(grid: Grid) {
     let winner = 0;
 
-    for (let i = 0; i < grid.grid.length; i++) {
-      for (let j = 0; j < grid.grid.length; j++) {
-        // check rows
-        if (
-          grid.grid[i][0] === grid.grid[i][1] &&
-          grid.grid[i][1] === grid.grid[i][2] &&
-          grid.grid[i][0] === grid.grid[i][2] &&
-          grid.grid[i][0] !== 0
-        ) {
-          winner = grid.grid[i][0];
-          setGameOver(true);
-          gameOverHandler(winner);
-          setWinLine({ n: i, type: KEY_ROW });
-          return;
-        }
+    if (!gameOver) {
+      for (let i = 0; i < grid.grid.length; i++) {
+        for (let j = 0; j < grid.grid.length; j++) {
+          // check rows
+          if (
+            grid.grid[i][0] === grid.grid[i][1] &&
+            grid.grid[i][1] === grid.grid[i][2] &&
+            grid.grid[i][0] === grid.grid[i][2] &&
+            grid.grid[i][0] !== 0
+          ) {
+            console.log('here');
+            winner = grid.grid[i][0];
+            setGameOver(true);
+            gameOverHandler(winner);
+            setWinLine({ n: i, type: KEY_ROW });
+            return true;
+          }
 
-        // check columns
-        if (
-          grid.grid[0][j] === grid.grid[1][j] &&
-          grid.grid[1][j] === grid.grid[2][j] &&
-          grid.grid[0][j] === grid.grid[2][j] &&
-          grid.grid[0][j] !== 0
-        ) {
-          winner = grid.grid[0][j];
-          setGameOver(true);
-          gameOverHandler(winner);
-          setWinLine({ n: j, type: KEY_COLUMN });
-          return;
-        }
+          // check columns
+          if (
+            grid.grid[0][j] === grid.grid[1][j] &&
+            grid.grid[1][j] === grid.grid[2][j] &&
+            grid.grid[0][j] === grid.grid[2][j] &&
+            grid.grid[0][j] !== 0
+          ) {
+            winner = grid.grid[0][j];
+            setGameOver(true);
+            gameOverHandler(winner);
+            setWinLine({ n: j, type: KEY_COLUMN });
+            return true;
+          }
 
-        // check diagonal 1
-        if (
-          grid.grid[0][0] === grid.grid[1][1] &&
-          grid.grid[1][1] === grid.grid[2][2] &&
-          grid.grid[0][0] === grid.grid[2][2] &&
-          grid.grid[0][0] !== 0
-        ) {
-          winner = grid.grid[0][0];
-          setGameOver(true);
-          gameOverHandler(winner);
-          setWinLine({ n: 1, type: KEY_DIAGONAL });
-          return;
-        }
+          // check diagonal 1
+          if (
+            grid.grid[0][0] === grid.grid[1][1] &&
+            grid.grid[1][1] === grid.grid[2][2] &&
+            grid.grid[0][0] === grid.grid[2][2] &&
+            grid.grid[0][0] !== 0
+          ) {
+            winner = grid.grid[0][0];
+            setGameOver(true);
+            gameOverHandler(winner);
+            setWinLine({ n: 1, type: KEY_DIAGONAL });
+            return true;
+          }
 
-        // check diagonal 2
-        if (
-          grid.grid[0][2] === grid.grid[1][1] &&
-          grid.grid[1][1] === grid.grid[2][0] &&
-          grid.grid[0][2] === grid.grid[0][2] &&
-          grid.grid[0][2] !== 0
-        ) {
-          grid.grid[0][2];
-          setGameOver(true);
-          gameOverHandler(winner);
-          return;
+          // check diagonal 2
+          if (
+            grid.grid[0][2] === grid.grid[1][1] &&
+            grid.grid[1][1] === grid.grid[2][0] &&
+            grid.grid[0][2] === grid.grid[0][2] &&
+            grid.grid[0][2] !== 0
+          ) {
+            grid.grid[0][2];
+            setGameOver(true);
+            gameOverHandler(winner);
+            return true;
+          }
         }
       }
-    }
-    if (turn === 9 && !gameOver) {
-      gameOverHandler(winner);
-      return;
+      if (turn === 9 && !gameOver) {
+        gameOverHandler(winner);
+        return true;
+      }
     }
   }
 
@@ -175,12 +179,16 @@ export default function Home() {
       setScore(copyScore);
     }
 
+    // init new game
     setTimeout(() => {
       newGame(grid);
     }, 2000);
   }
 
   useEffect(() => {
+    checkWin(grid);
+    
+
     if (mode === KEY_MODE_SOLO && turn % 2 !== 0 && !gameOver) {
       setAIisPlaying(true);
       setTimeout(() => {
@@ -188,18 +196,14 @@ export default function Home() {
         setAIisPlaying(false);
       }, 1000);
     }
-  }, [turn]);
-
-  useEffect(() => {
-    checkWin(grid);
-  }, [grid]);
+  }, [turn, grid, gameOver]);
 
   return (
     <main className="bg-gray-900 h-screen relative">
-      <div className="text-white font-bold text-4xl text-center p-5 mb-10 w-full bg-gray-900">
+      <div className="text-white font-bold text-4xl text-center p-8 w-full border-b-2 border-gray-700">
         TikTakTu
       </div>
-      <div className="flex justify-center space-x-10">
+      <div className="flex justify-center space-x-4 m-auto bg-gray-800 w-full p-20 border-b-2 border-gray-700">
         <Settings
           onClick={resetGame}
           mode={mode}

@@ -16,12 +16,12 @@ function ScoreBoard({ score }: Props) {
         <ResultsIcons className="w-4 h-4" />
         <p className="text-gray-500">Scores</p>
       </div>
-      <div className="p-4 text-gray-500 font-bold bg-gray-800 rounded-lg flex-col space-y-8">
+      <div className="p-4 text-gray-500 font-bold bg-gray-900 rounded-lg flex flex-col space-y-8">
         <div>
-          X : <span className="text-white font-normal text-md">{scoreX}</span>
+          X : <span className="text-white font-bold text-md">{score.X}</span>
         </div>
         <div>
-          O : <span className="text-white font-normal text-md">{scoreO}</span>
+          O : <span className="text-white font-bold text-md">{scoreO}</span>
         </div>
       </div>
     </div>
