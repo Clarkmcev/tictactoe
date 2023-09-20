@@ -3,10 +3,18 @@
 @tailwind utilities;
 
 @layer base {
-    p {
-        @apply text-gray-300
-    }
-    label {
-        @apply cursor-pointer
-    }
+  p {
+    @apply text-gray-300;
+  }
+  label {
+    @apply cursor-pointer;
+  }
+}
+
+circle,
+rect,
+line {
+  stroke-width: 10px;
+  stroke-linecap: round;
+  fill: transparent;
 }

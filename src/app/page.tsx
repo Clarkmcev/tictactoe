@@ -3,19 +3,27 @@
 import { useEffect, useState } from 'react';
 import Board from './components/Board';
 import Settings from './components/Settings';
-import { KEY_EASY_DIFFICULTY, KEY_MODE_DUO, translateSign } from './components/utils';
+import {
+  KEY_EASY_DIFFICULTY,
+  KEY_MODE_DUO,
+  KEY_MODE_SOLO,
+  gridNotCompleted,
+  translateSign,
+} from './components/utils';
 import toast, { Toaster } from 'react-hot-toast';
-import ToastResult from './components/ToastResult';
+import ToastResult from './components/toasts/ToastResult';
 import ScoreBoard from './components/ScoreBoard';
+import WinnerLine from './components/icons/WinnerLine';
+import { draw } from './components/icons/Icon';
 
 export type Grid = {
   grid: number[][];
 };
 
-interface Score  {
+interface Score {
   X: number;
   O: number;
-};
+}
 
 export default function Home() {
   const gridInit = [
@@ -103,31 +111,67 @@ export default function Home() {
     }
   }
 
+  function AI(grid: Grid) {
+    let hasNotPlayed = true;
+    let randomRowIndex = 0;
+    let randomColIndex = 0;
+
+    // const gridUncompleted = gridCompleted(grid, 0);
+    // console.log(gridCompleted);
+
+    const gridIsNotEmpty = gridNotCompleted(grid, 0);
+
+    while (hasNotPlayed && gridIsNotEmpty) {
+      randomRowIndex = Math.round(Math.random() * 2);
+      randomColIndex = Math.round(Math.random() * 2);
+
+      if (grid.grid[randomRowIndex][randomColIndex] === 0) {
+        hasNotPlayed = false;
+        AIplay(randomRowIndex, randomColIndex);
+        break;
+      }
+    }
+  }
+
+  function AIplay(rowIndex: number, colIndex: number) {
+    const copyGrid = [...grid.grid];
+    copyGrid[rowIndex][colIndex] = 2;
+    setGrid({ grid: copyGrid });
+    const incrementTurn = turn + 1;
+    setTurn(incrementTurn);
+  }
+
   function gameOverHandler(winner: number) {
-    toast((t) => <ToastResult className="bg-gray-700" winner={winner} />, {
+    toast((t) => <ToastResult winner={winner} className="" />, {
       style: {
         borderRadius: '10px',
         fontStyle: 'bold',
-        background: '#374151',
+        background: 'transparent',
         color: '#9ca3af',
       },
       duration: 2000,
     });
 
     if (winner !== 0) {
-      let copyScore = {...score }
-      const sign = translateSign(winner)
-      copyScore[sign] += 1 
-      setScore(copyScore)
+      let copyScore = { ...score };
+      const sign = translateSign(winner);
+      copyScore[sign] += 1;
+      setScore(copyScore);
     }
   }
 
   useEffect(() => {
+    if (mode === KEY_MODE_SOLO && turn % 2 !== 0 && !gameOver) {
+      AI(grid);
+    }
+  }, [turn]);
+
+  useEffect(() => {
     checkWin(grid);
-  }, [turn, grid]);
+  }, [grid]);
 
   return (
-    <main className="p-10 bg-gray-900 m-auto">
+    <main className="p-10 bg-gray-900 m-auto h-screen">
       <div className="text-white font-bold text-4xl text-center mb-10">
         My TikTakTu
       </div>
@@ -151,10 +195,9 @@ export default function Home() {
         />
         <ScoreBoard score={score} />
         <Toaster position="bottom-center" reverseOrder={false} />
-
-        {/* GameStatusDialog */}
-        {/* {gameOver ? <InitDialog isOpen={gameOver} setIsOpen={setGameOver} onClick={() => resetGame()}/> : null} */}
-        {/* {gameOver ?<>wwww</> : null} */}
+      </div>
+      <div className="absolute">
+        {gameOver ? <WinnerLine draw={draw} type={''} /> : null}
       </div>
     </main>
   );

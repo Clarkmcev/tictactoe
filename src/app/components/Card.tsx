@@ -3,6 +3,7 @@
 import React from 'react';
 import { Grid } from '../page';
 import { signLookUp } from './utils';
+import Icon from './icons/Icon';
 
 type CardProps = {
   value: number;
@@ -42,7 +43,7 @@ export const Card = ({
 
 
   return (
-    <button
+  <button
       disabled={disabled || gameOver}
       onClick={playCard}
       value={String(position[0] + String(position[1]))}
@@ -50,7 +51,7 @@ export const Card = ({
         disabled || gameOver ? 'bg-gray-700' : 'hover:bg-gray-700'
       }`}
     >
-      {signLookUp[value]}
+      <Icon value={value} />
     </button>
   );
 };

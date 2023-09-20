@@ -21,7 +21,7 @@ function Board({
   mode,
 }: BoardProps) {
   return (
-    <main className="flex h-screen flex-col items-center bg-gray-900">
+    <main className="flex flex-col items-center bg-gray-900">
       <div className="p-4 flex justify-between w-full">
         <div>
           <p className="text-gray-500 font-bold">
@@ -34,7 +34,7 @@ function Board({
           </p>
         </div>
       </div>
-      <div>
+      <div className="pt-2 px-2 bg-gray-700 rounded-lg">
         {grid.map((row, rowIndex) => (
           <div key={rowIndex} className="flex space-x-2">
             {grid.map((col, colIndex) => (

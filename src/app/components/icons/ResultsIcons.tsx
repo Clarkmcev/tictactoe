@@ -1,6 +1,10 @@
 import React from 'react';
 
-function ResultsIcons({ className }) {
+type Props = {
+  className: string
+}
+
+function ResultsIcons({ className } : Props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
