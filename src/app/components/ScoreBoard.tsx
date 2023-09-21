@@ -21,7 +21,7 @@ function ScoreBoard({ score }: Props) {
           X : <span className="text-white font-bold text-md">{score.X}</span>
         </div>
         <div>
-          O : <span className="text-white font-bold text-md">{scoreO}</span>
+          O : <span className="text-white font-bold text-md">{score.O}</span>
         </div>
       </div>
     </div>

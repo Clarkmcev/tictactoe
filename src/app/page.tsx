@@ -188,7 +188,7 @@ export default function Home() {
   useEffect(() => {
     checkWin(grid);
     
-
+    
     if (mode === KEY_MODE_SOLO && turn % 2 !== 0 && !gameOver) {
       setAIisPlaying(true);
       setTimeout(() => {
@@ -196,6 +196,7 @@ export default function Home() {
         setAIisPlaying(false);
       }, 1000);
     }
+    // eslint-disable-next-line no-use-before-define
   }, [turn, grid, gameOver]);
 
   return (

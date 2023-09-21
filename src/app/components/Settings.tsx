@@ -56,7 +56,7 @@ function Settings({
             </label>
           </div>
           <div>
-            <label className="flex space-x-2">
+            <label className="flex whitespace-nowrap space-x-2">
               <input
                 type="checkbox"
                 checked={mode === KEY_MODE_DUO}
@@ -103,11 +103,7 @@ function Settings({
           </div>
         </div>
       ) : null}
-      {/* {gameOver ? (
-        <Button onClick={onClick}>Start new game</Button>
-      ) : (
-        <Button onClick={onClick}>Reset game</Button>
-      )} */}
+
       <div className="flex space-x-2">
         <Button
           icon={<Refresh className="h-4 w-4" />}

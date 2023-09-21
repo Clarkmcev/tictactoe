@@ -11,7 +11,7 @@ export default function ToastResult({ winner, className }: Props) {
 
   switch (winner) {
     case 0:
-      return <div className={className}>It's a <span className="text-white">tie.</span></div>;
+      return <div className={className}>It&apos;s a <span className="text-white">tie.</span></div>;
     case 1:
       return <div className={className}><span className="text-white">{winnerSign}</span> has won.</div>;
     case 2:

@@ -21,7 +21,7 @@ function WinnerLine({ draw, type }: Props) {
     if (type) {
       setPosition(winLine[type.type][type.n]);
     }
-  }, [position]);
+  }, [position, type]);
 
   if (type) {
     return (
