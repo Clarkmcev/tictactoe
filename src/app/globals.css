@@ -18,3 +18,12 @@ line {
   stroke-linecap: round;
   fill: transparent;
 }
+
+.section {
+  
+  background-image: 
+  linear-gradient(
+    hsl(222, 20% 30%)
+    hsl(113, 10%, 20%)
+  );
+}

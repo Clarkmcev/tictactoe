@@ -188,7 +188,7 @@ export default function Home() {
   useEffect(() => {
     checkWin(grid);
     
-    
+    console.log(turn, grid, gameOver)
     if (mode === KEY_MODE_SOLO && turn % 2 !== 0 && !gameOver) {
       setAIisPlaying(true);
       setTimeout(() => {
@@ -200,11 +200,11 @@ export default function Home() {
   }, [turn, grid, gameOver]);
 
   return (
-    <main className="bg-gray-900 h-screen relative">
+    <main className="bg-gray-900 h-screen relative section">
       <div className="text-white font-bold text-4xl text-center p-8 w-full border-b-2 border-gray-700">
         TikTakTu
       </div>
-      <div className="flex justify-center space-x-4 m-auto bg-gray-800 w-full p-20 border-b-2 border-gray-700">
+      <div className="flex justify-center space-x-4 m-auto bg-gray-800 w-full p-10 border-b-2 border-gray-700">
         <Settings
           onClick={resetGame}
           mode={mode}
