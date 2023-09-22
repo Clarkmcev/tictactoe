@@ -77,6 +77,7 @@ function Settings({
                 type="checkbox"
                 checked={difficulty === KEY_EASY_DIFFICULTY}
                 onClick={() => setDifficulty(KEY_EASY_DIFFICULTY)}
+                onChange={onChange}
               />
               <p>Easy</p>
             </label>
@@ -87,6 +88,7 @@ function Settings({
                 type="checkbox"
                 checked={difficulty === KEY_MEDIUM_DIFFICULTY}
                 onClick={() => setDifficulty(KEY_MEDIUM_DIFFICULTY)}
+                onChange={onChange}
               />
               <p>Medium</p>
             </label>
@@ -97,6 +99,7 @@ function Settings({
                 type="checkbox"
                 checked={difficulty === KEY_HARD_DIFFICULTY}
                 onClick={() => setDifficulty(KEY_HARD_DIFFICULTY)}
+                onChange={onChange}
               />
               <p>Hard</p>
             </label>

@@ -57,7 +57,7 @@ export default function Home() {
     setScore({ X: 0, O: 0 });
   }
 
-   function checkWin(grid: Grid) {
+  function checkWInAndAI(grid: Grid) {
     let winner = 0;
 
     if (!gameOver) {
@@ -70,16 +70,14 @@ export default function Home() {
             grid.grid[i][0] === grid.grid[i][2] &&
             grid.grid[i][0] !== 0
           ) {
-            console.log('here');
             winner = grid.grid[i][0];
             setGameOver(true);
             gameOverHandler(winner);
             setWinLine({ n: i, type: KEY_ROW });
-            return true;
           }
 
           // check columns
-          if (
+          else if (
             grid.grid[0][j] === grid.grid[1][j] &&
             grid.grid[1][j] === grid.grid[2][j] &&
             grid.grid[0][j] === grid.grid[2][j] &&
@@ -93,7 +91,7 @@ export default function Home() {
           }
 
           // check diagonal 1
-          if (
+          else if (
             grid.grid[0][0] === grid.grid[1][1] &&
             grid.grid[1][1] === grid.grid[2][2] &&
             grid.grid[0][0] === grid.grid[2][2] &&
@@ -107,7 +105,7 @@ export default function Home() {
           }
 
           // check diagonal 2
-          if (
+          else if (
             grid.grid[0][2] === grid.grid[1][1] &&
             grid.grid[1][1] === grid.grid[2][0] &&
             grid.grid[0][2] === grid.grid[0][2] &&
@@ -117,13 +115,17 @@ export default function Home() {
             setGameOver(true);
             gameOverHandler(winner);
             return true;
-          }
+          } 
         }
       }
       if (turn === 9 && !gameOver) {
         gameOverHandler(winner);
         return true;
       }
+    }
+
+    if (!gameOver) {
+      AIplayTimeout()
     }
   }
 
@@ -160,6 +162,17 @@ export default function Home() {
     setTurn(incrementTurn);
   }
 
+  function AIplayTimeout() {
+    if (mode === KEY_MODE_SOLO && turn % 2 !== 0 && !gameOver) {
+      console.log(turn, gameOver);
+      setAIisPlaying(true);
+      setTimeout(() => {
+        AI(grid);
+        setAIisPlaying(false);
+      }, 1000);
+    }
+  }
+
   function gameOverHandler(winner: number) {
     toast((t) => <ToastResult winner={winner} className="" />, {
       style: {
@@ -186,16 +199,8 @@ export default function Home() {
   }
 
   useEffect(() => {
-    checkWin(grid);
-    
-    console.log(turn, grid, gameOver)
-    if (mode === KEY_MODE_SOLO && turn % 2 !== 0 && !gameOver) {
-      setAIisPlaying(true);
-      setTimeout(() => {
-        AI(grid);
-        setAIisPlaying(false);
-      }, 1000);
-    }
+    checkWInAndAI(grid);
+
     // eslint-disable-next-line no-use-before-define
   }, [turn, grid, gameOver]);
 

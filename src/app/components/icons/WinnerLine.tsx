@@ -7,12 +7,19 @@ type Props = {
   type: any;
 };
 
+type Coordinates = {
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+}
+
 function WinnerLine({ draw, type }: Props) {
-  const [position, setPosition] = useState({
-    x1: '',
-    y1: '',
-    x2: '',
-    y2: '',
+  const [position, setPosition] = useState<Coordinates>({
+    x1: 0,
+    y1: 0,
+    x2: 0,
+    y2: 0,
   });
 
   function translatePosition() {}
