@@ -1,6 +1,7 @@
 import React from 'react';
 import ResultsIcons from './icons/ResultsIcons';
 import { scoreWriter } from './utils';
+import Refresh from './icons/Refresh';
 
 export type Props = {
   score: any;

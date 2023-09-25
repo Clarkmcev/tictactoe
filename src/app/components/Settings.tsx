@@ -19,6 +19,7 @@ export type SettingProps = {
   gameOver: boolean;
   reset: any;
   grid: any;
+  turn: number
 };
 
 function Settings({
@@ -30,6 +31,7 @@ function Settings({
   gameOver,
   reset,
   grid,
+  turn
 }: SettingProps) {
   function onChange() {
     reset(grid);
@@ -37,9 +39,11 @@ function Settings({
 
   return (
     <div>
-      <div className="font-bold text-gray-500 p-4 flex items-center space-x-2">
-        <SettingsIcons className="w-4 h-4" />
-        <p className="text-gray-500">Settings</p>
+      <div className="flex">
+        <div className="font-bold text-gray-500 p-4 flex items-center space-x-2">
+          <SettingsIcons className="w-4 h-4" />
+          <p className="text-gray-500">Settings</p>
+        </div>
       </div>
       <div className="text-white bg-gray-900 p-4 rounded-lg h-fit mb-2">
         <div className="flex-col space-y-4">
@@ -86,17 +90,6 @@ function Settings({
             <label className="flex space-x-2">
               <input
                 type="checkbox"
-                checked={difficulty === KEY_MEDIUM_DIFFICULTY}
-                onClick={() => setDifficulty(KEY_MEDIUM_DIFFICULTY)}
-                onChange={onChange}
-              />
-              <p>Medium</p>
-            </label>
-          </div>
-          <div>
-            <label className="flex space-x-2">
-              <input
-                type="checkbox"
                 checked={difficulty === KEY_HARD_DIFFICULTY}
                 onClick={() => setDifficulty(KEY_HARD_DIFFICULTY)}
                 onChange={onChange}
@@ -106,21 +99,13 @@ function Settings({
           </div>
         </div>
       ) : null}
-
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 ml-2">
         <Button
           icon={<Refresh className="h-4 w-4" />}
           onClick={onClick}
-          disabled={gameOver}
+          disabled={gameOver || turn === 0}
         >
-          Start
-        </Button>
-        <Button
-          icon={<Refresh className="h-4 w-4" />}
-          onClick={onClick}
-          disabled={gameOver}
-        >
-          Reset
+          Reset game
         </Button>
       </div>
     </div>

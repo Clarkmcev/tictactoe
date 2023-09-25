@@ -16,6 +16,8 @@ import {
 import toast, { Toaster } from 'react-hot-toast';
 import ToastResult from './components/toasts/ToastResult';
 import ScoreBoard from './components/ScoreBoard';
+import Button from './components/Button';
+import Refresh from './components/icons/Refresh';
 
 export type Grid = {
   grid: number[][];
@@ -114,18 +116,19 @@ export default function Home() {
             grid.grid[0][2];
             setGameOver(true);
             gameOverHandler(winner);
+            setWinLine({ n: 0, type: KEY_DIAGONAL });
             return true;
-          } 
+          }
         }
       }
-      if (turn === 9 && !gameOver) {
-        gameOverHandler(winner);
-        return true;
-      }
+      // if (turn === 9 && !gameOver) {
+      //   gameOverHandler(winner);
+      //   return true;
+      // }
     }
 
     if (!gameOver) {
-      AIplayTimeout()
+      AIplayTimeout();
     }
   }
 
@@ -164,7 +167,6 @@ export default function Home() {
 
   function AIplayTimeout() {
     if (mode === KEY_MODE_SOLO && turn % 2 !== 0 && !gameOver) {
-      console.log(turn, gameOver);
       setAIisPlaying(true);
       setTimeout(() => {
         AI(grid);
@@ -204,6 +206,10 @@ export default function Home() {
     // eslint-disable-next-line no-use-before-define
   }, [turn, grid, gameOver]);
 
+  useEffect(() => {
+    resetGame(grid);
+  }, []);
+
   return (
     <main className="bg-gray-900 h-screen relative section">
       <div className="text-white font-bold text-4xl text-center p-8 w-full border-b-2 border-gray-700">
@@ -219,6 +225,7 @@ export default function Home() {
           gameOver={gameOver}
           reset={resetGame}
           grid={grid.grid}
+          turn={turn}
         />
         <Board
           grid={grid.grid}
@@ -230,6 +237,7 @@ export default function Home() {
           mode={mode}
           winLine={winLine}
           AIisPlaying={AIisPlaying}
+          difficulty={difficulty}
         />
         <ScoreBoard score={score} />
         <Toaster position="bottom-center" reverseOrder={false} />

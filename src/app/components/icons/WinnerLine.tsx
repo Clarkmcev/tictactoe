@@ -22,8 +22,6 @@ function WinnerLine({ draw, type }: Props) {
     y2: 0,
   });
 
-  function translatePosition() {}
-
   useEffect(() => {
     if (type) {
       setPosition(winLine[type.type][type.n]);
@@ -44,7 +42,7 @@ function WinnerLine({ draw, type }: Props) {
           y1={position.y1}
           x2={position.x2}
           y2={position.y2}
-          stroke="#FFFFFF"
+          stroke="#f54242"
           variants={draw}
           custom={1}
         />
