@@ -76,6 +76,7 @@ export default function Home() {
             setGameOver(true);
             gameOverHandler(winner);
             setWinLine({ n: i, type: KEY_ROW });
+            return true;
           }
 
           // check columns
@@ -121,10 +122,10 @@ export default function Home() {
           }
         }
       }
-      // if (turn === 9 && !gameOver) {
-      //   gameOverHandler(winner);
-      //   return true;
-      // }
+      if (turn === 9 && !gameOver) {
+        gameOverHandler(winner);
+        return true;
+      }
     }
 
     if (!gameOver) {
